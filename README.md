@@ -1,264 +1,173 @@
+
 # Library Management System
 
-A comprehensive library management system built with Django REST Framework, featuring user authentication, book management, and loan tracking.
+A Django REST Framework (DRF)-based **Library Management System** that allows users to browse, search, borrow, and return books. Built as part of the Pixelfield onboarding test task.
+
+---
 
 ## Features
 
-### User Management
-- User registration and authentication with JWT tokens
-- Role-based access control (Admin/Regular User)
-- User profiles with additional information
+- **User Roles:**
+  - Anonymous users: Browse/search books (read-only).
+  - Registered users: Borrow and return books.
+  - Administrators: Manage books and users.
 
-### Book Management
-- Complete CRUD operations for books
-- Advanced filtering and search capabilities
-- Pagination support
-- Genre categorization
-- Availability tracking
+- **Authentication & Authorization:**
+  - User registration and login via Django REST Framework.
+  - JWT-based authentication (`djangorestframework-simplejwt`).
 
-### Loan Management
-- Book borrowing and returning system
-- Automatic due date calculation
-- Overdue tracking with fine calculation
-- User loan history
+- **Core Models:**
+  - **CustomUser**: Extends Django’s `AbstractUser`.
+  - **Book**: Title, author, ISBN, genre, publication date, availability, cover image.
+  - **Loan**: Tracks which user borrowed which book and when.
 
-### Security Features
-- JWT authentication
-- CSRF protection
-- XSS protection
-- SQL injection prevention
-- Role-based permissions
+- **Filtering & Pagination:**
+  - Implemented via `BookFilter` (Django Filters).
+  - Supports searching by title, author, genre, publication year, and filtering by availability.
+  - Paginated book lists (20 per page by default).
 
-### API Documentation
-- Swagger UI integration
-- Comprehensive API documentation
-- Interactive API testing
+- **API Documentation:**
+  - **Swagger UI**: `/swagger/`
+  - **Redoc**: `/redoc/`
 
-## Technology Stack
+- **Testing:**
+  - Unit tests for models, serializers, and views.
+  - Integration tests for API flows.
+  - **Run locally**: `python manage.py test books.tests users.tests loans.tests --verbosity=2`
+  - **Run via Docker**: `docker-compose run --rm test`
 
-- **Backend**: Django 4.2, Django REST Framework
-- **Database**: PostgreSQL
-- **Authentication**: JWT (Simple JWT)
-- **Documentation**: drf-yasg (Swagger)
-- **Testing**: pytest, coverage
-- **Containerization**: Docker
-- **Deployment**: Heroku ready
+- **Security:**
+  - **Custom `SecurityMiddleware`** blocks suspicious patterns (XSS, SQL Injection attempts) by decoding full URL/query and POST data.
+  - Adds strict security headers: `X-Frame-Options`, `X-Content-Type-Options`, `X-XSS-Protection`, `Referrer-Policy`.
+  - Django ORM used exclusively (prevents SQL injection).
 
-## Installation
-
-### Local Development
-
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd library_management
-```
-
-2. Create a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-4. Set up environment variables:
-```bash
-cp .env.example .env
-# Edit .env with your configuration
-```
-
-5. Run migrations:
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
-
-6. Create a superuser:
-```bash
-python manage.py createsuperuser
-```
-
-7. Populate with sample data (optional):
-```bash
-python manage.py populate_books
-```
-
-8. Run the development server:
-```bash
-python manage.py runserver
-```
-
-### Docker Development
-
-1. Build and run with Docker Compose:
-```bash
-docker-compose up --build
-```
-
-2. Run migrations:
-```bash
-docker-compose exec web python manage.py migrate
-```
-
-3. Create a superuser:
-```bash
-docker-compose exec web python manage.py createsuperuser
-```
+---
 
 ## API Endpoints
 
 ### Authentication
-- `POST /api/auth/register/` - User registration
-- `POST /api/auth/login/` - User login
-- `POST /api/auth/logout/` - User logout
-- `GET /api/auth/profile/` - Get/Update user profile
-- `POST /api/auth/token/refresh/` - Refresh JWT token
+- `POST /api/auth/register/` – User registration
+- `POST /api/auth/login/` – User login
+- `POST /api/auth/logout/` – User logout
+- `GET /api/auth/profile/` – Get/update user profile
+- `POST /api/auth/token/refresh/` – Refresh JWT token
 
 ### Books
-- `GET /api/books/` - List all books (with filtering and search)
-- `POST /api/books/` - Create new book (Admin only)
-- `GET /api/books/{id}/` - Get book details
-- `PUT /api/books/{id}/` - Update book (Admin only)
-- `DELETE /api/books/{id}/` - Delete book (Admin only)
-- `GET /api/books/stats/` - Get book statistics
+- `GET /api/books/` – List all books (with filtering, search, pagination)
+- `POST /api/books/` – Create new book (Admin only)
+- `GET /api/books/{id}/` – Get book details
+- `PUT /api/books/{id}/` – Update book (Admin only)
+- `DELETE /api/books/{id}/` – Delete book (Admin only)
+- `GET /api/books/stats/` – Get book statistics
 
 ### Loans
-- `GET /api/loans/` - List loans (user's loans or all for admin)
-- `POST /api/loans/create/` - Create new loan
-- `POST /api/loans/{id}/return/` - Return a book
-- `GET /api/loans/my-loans/` - Get current user's loans
-- `GET /api/loans/stats/` - Get loan statistics (Admin only)
+- `GET /api/loans/` – List all loans (user’s own loans or all for admins)
+- `POST /api/loans/create/` – Borrow a book (creates a loan)
+- `POST /api/loans/{id}/return/` – Return a borrowed book
+- `GET /api/loans/my-loans/` – List current user’s loans
+- `GET /api/loans/stats/` – Loan statistics (Admin only)
 
-## Testing
-
-Run the test suite:
-```bash
-pytest
-```
-
-Run with coverage:
-```bash
-pytest --cov=.
-```
-
-Generate coverage report:
-```bash
-coverage html
-```
-
-## Deployment
-
-### Heroku Deployment
-
-1. Install Heroku CLI and login:
-```bash
-heroku login
-```
-
-2. Create a new Heroku app:
-```bash
-heroku create your-app-name
-```
-
-3. Add PostgreSQL addon:
-```bash
-heroku addons:create heroku-postgresql:hobby-dev
-```
-
-4. Set environment variables:
-```bash
-heroku config:set SECRET_KEY="your-secret-key"
-heroku config:set DEBUG=False
-heroku config:set ALLOWED_HOSTS="your-app-name.herokuapp.com"
-```
-
-5. Deploy:
-```bash
-git push heroku main
-```
-
-6. Run migrations:
-```bash
-heroku run python manage.py migrate
-```
-
-7. Create superuser:
-```bash
-heroku run python manage.py createsuperuser
-```
-
-### Docker Production
-
-1. Build production image:
-```bash
-docker build -t library-management .
-```
-
-2. Run with production database:
-```bash
-docker run -e DATABASE_URL="postgresql://user:pass@host:5432/db" \
-           -e SECRET_KEY="your-secret-key" \
-           -e DEBUG=False \
-           -p 8000:8000 \
-           library-management
-```
-
-## API Documentation
-
-Access the API documentation at:
-- Swagger UI: `http://localhost:8000/swagger/`
-- ReDoc: `http://localhost:8000/redoc/`
-
-## Admin Panel
-
-Access the Django admin panel at:
-- `http://localhost:8000/admin/`
+---
 
 ## Project Structure
 
-```
 library_management/
-├── manage.py
-├── requirements.txt
+├── books/ # Book model, views, serializers, filters, tests, and populate script
+│ ├── filters.py
+│ ├── management/commands/populate_books.py
+│ └── tests/
+├── loans/ # Loan model, API views, and tests
+│ └── tests/
+├── users/ # Custom user model, registration/login API, and tests
+│ └── tests/
+├── library_management/ # Settings, URLs, middleware (SecurityMiddleware)
+│ └── middleware.py
+├── .github/workflows/ # GitHub Actions CI (runs tests on push)
 ├── Dockerfile
 ├── docker-compose.yml
-├── README.md
-├── .env.example
-├── library_management/
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-├── users/
-│   ├── models.py
-│   ├── views.py
-│   ├── serializers.py
-│   └── tests/
-├── books/
-│   ├── models.py
-│   ├── views.py
-│   ├── serializers.py
-│   ├── filters.py
-│   └── tests/
-└── loans/
-    ├── models.py
-    ├── views.py
-    ├── serializers.py
-    └── tests/
-```
+├── requirements.txt
+├── .env
+└── manage.py
 
-## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Ensure all tests pass
-6. Submit a pull request
+---
 
-## License
+## Local Setup (without Docker)
 
-This project is licensed under the MIT License.
+### Requirements
+- Python 3.11+
+- Virtualenv
+- SQLite (for local dev/testing)
+
+### Steps`bash
+
+    git clone https://github.com/kkoci/library_management.git
+    cd library_management
+
+# Create & activate virtualenv
+
+    python -m venv venv
+    source venv/bin/activate      # macOS/Linux
+    venv\Scripts\activate         # Windows
+
+# Install dependencies
+
+    pip install -r requirements.txt
+
+# Configure environment
+
+    cp .env.example .env
+
+# Run migrations & seed data
+
+    python manage.py makemigrations
+    python manage.py migrate
+    python manage.py createsuperuser
+    python manage.py populate_books
+
+# Start development server
+
+    python manage.py runserver
+    App: http://localhost:8000
+    Swagger: http://localhost:8000/swagger/
+    Redoc: http://localhost:8000/redoc/
+
+Running with Docker
+
+    docker-compose up --build
+    Runs web app on port 8000
+    Starts PostgreSQL DB container
+    Seeds the database with sample books
+    Runs all tests in a dedicated container
+
+## Run tests manually:
+
+    docker-compose run --rm test
+
+## Environment Variables
+
+.env example:
+
+    DEBUG=True
+    SECRET_KEY=your-secret-key
+    DATABASE_URL=sqlite:///db.sqlite3
+    ALLOWED_HOSTS=localhost,127.0.0.1
+
+For PostgreSQL in Docker:
+
+    DATABASE_URL=postgresql://library_user:password@db:5432/library
+
+Testing
+
+    Local:
+    python manage.py test books.tests users.tests loans.tests --verbosity=2
+    Docker:
+    docker-compose run --rm test
+
+CI/CD: Runs automatically via GitHub Actions on every push to main.
+Hours Spent
+
+*Approx. 3 hours (development, tests, Docker, CI/CD, documentation).
+License*
+
+MIT License – see LICENSE for details.
