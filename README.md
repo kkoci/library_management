@@ -71,23 +71,23 @@ A Django REST Framework (DRF)-based **Library Management System** that allows us
 
 ## Project Structure
 
-library_management/
-├── books/ # Book model, views, serializers, filters, tests, and populate script
-│ ├── filters.py
-│ ├── management/commands/populate_books.py
-│ └── tests/
-├── loans/ # Loan model, API views, and tests
-│ └── tests/
-├── users/ # Custom user model, registration/login API, and tests
-│ └── tests/
-├── library_management/ # Settings, URLs, middleware (SecurityMiddleware)
-│ └── middleware.py
-├── .github/workflows/ # GitHub Actions CI (runs tests on push)
-├── Dockerfile
-├── docker-compose.yml
-├── requirements.txt
-├── .env
-└── manage.py
+    library_management/
+    ├── books/ # Book model, views, serializers, filters, tests, and populate script
+    │ ├── filters.py
+    │ ├── management/commands/populate_books.py
+    │ └── tests/
+    ├── loans/ # Loan model, API views, and tests
+    │ └── tests/
+    ├── users/ # Custom user model, registration/login API, and tests
+    │ └── tests/
+    ├── library_management/ # Settings, URLs, middleware (SecurityMiddleware)
+    │ └── middleware.py
+    ├── .github/workflows/ # GitHub Actions CI (runs tests on push)
+    ├── Dockerfile
+    ├── docker-compose.yml
+    ├── requirements.txt
+    ├── .env
+    └── manage.py
 
 
 ---
