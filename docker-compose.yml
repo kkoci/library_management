@@ -29,7 +29,9 @@ services:
     command: >
       sh -c "
         python manage.py migrate &&
-        python manage.py test --verbosity=2
+        python manage.py test books --verbosity=2 &&
+        python manage.py test users --verbosity=2 &&
+        python manage.py test loans --verbosity=2
       "
     env_file:
       - .env
