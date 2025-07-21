@@ -21,7 +21,6 @@ from django.conf.urls.static import static
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from django.contrib.auth import get_user_model
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -45,14 +44,3 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    
-# Create test admin
-def create_admin():
-    User = get_user_model()
-    if not User.objects.filter(username='admin').exists():
-        User.objects.create_superuser('admin', 'admin@test.com', 'admin123')
-
-try:
-    create_admin()
-except:
-    pass
