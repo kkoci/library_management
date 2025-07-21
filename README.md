@@ -165,9 +165,20 @@ Testing
     docker-compose run --rm test
 
 CI/CD: Runs automatically via GitHub Actions on every push to main.
+
+## Deployment on Railway 
+
+1. Fork/clone this repository 
+2. Go to railway.app and connect your GitHub account 
+3. Create new project from GitHub repo 
+4. Railway will auto-detect Django and deploy 
+5. Generate domain in Railway dashboard
+6. Visit your live application at the generated URL Live Demo: https://librarymanagement-production-58de.up.railway.app
+
+Live Demo: https://librarymanagement-production-58de.up.railway.app
 Hours Spent
 
-*Approx. 3 hours (development, tests, Docker, CI/CD, documentation).
+*Approx. 4 hours (development, tests, Docker, CI/CD, documentation).
 License*
 
 MIT License – see LICENSE for details.
