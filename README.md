@@ -164,8 +164,6 @@ Testing
     Docker:
     docker-compose run --rm test
 
-CI/CD: Runs automatically via GitHub Actions on every push to main.
-
 ## Deployment on Railway 
 
 1. Fork/clone this repository 
@@ -179,12 +177,14 @@ CI/CD: Runs automatically via GitHub Actions on every push to main.
 
 - Currently using DEBUG = True and ALLOWED_HOSTS = ['*'] for demo purposes - In production deployment, these would be properly configured for security
 CI/CD: Runs automatically via GitHub Actions on every push to main.
+
 Hours Spent
+*Approx. 3 hours (development, tests, Docker, CI/CD, documentation).*
 
-Live Demo: https://librarymanagement-production-58de.up.railway.app
-Hours Spent
+## Admin Access
 
-*Approx. 4 hours (development, tests, Docker, CI/CD, documentation).
-License*
+Test admin account is created automatically on deployment.
+Credentials provided separately for security.
 
+## License
 MIT License – see LICENSE for details.
