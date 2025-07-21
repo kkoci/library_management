@@ -6,12 +6,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'unsafe-default-for-dev-only')
-DEBUG = False  
-ALLOWED_HOSTS = [
-    'librarymanagement-production-58de.up.railway.app',
-    'localhost',
-    '127.0.0.1',
-]
+DEBUG = True 
+ALLOWED_HOSTS = ['*']
 # Load DATABASE_URL from environment (default empty string)
 DATABASE_URL = os.getenv("DATABASE_URL", "")
 

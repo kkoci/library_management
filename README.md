@@ -175,6 +175,12 @@ CI/CD: Runs automatically via GitHub Actions on every push to main.
 5. Generate domain in Railway dashboard
 6. Visit your live application at the generated URL Live Demo: https://librarymanagement-production-58de.up.railway.app
 
+## Production Notes 
+
+- Currently using DEBUG = True and ALLOWED_HOSTS = ['*'] for demo purposes - In production deployment, these would be properly configured for security
+CI/CD: Runs automatically via GitHub Actions on every push to main.
+Hours Spent
+
 Live Demo: https://librarymanagement-production-58de.up.railway.app
 Hours Spent
 
